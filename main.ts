@@ -1,15 +1,12 @@
-// Tiny stack VM: a faithful interpreter of make.fun's tiny stack ISA v1
-// (kit: program/generator/subject/ISA.md). Pre-decodes each program once,
-// then runs a switch dispatch loop. Every trap code, limit and wrapping
-// rule follows the ISA; the reference VM is the authority where in doubt.
+// Tiny stack VM: faithful interpreter of make.fun's tiny stack ISA v1.
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 function run(p, inp) {
   const n = p.length;
-  const op = new Uint8Array(n); // opcode byte, 255 = unknown, 254 = cut-off immediate
-  const im = new Int32Array(n); // decoded immediate value
-  const md = new Uint8Array(n); // (pops << 5) | (pushes << 3) | immLen
+  const op = new Uint8Array(n);
+  const im = new Int32Array(n);
+  const md = new Uint8Array(n);
   for (let i = 0; i < n; i++) {
     const b = p[i];
     let L = 0, P = 0, Q = 0, v = 0;
